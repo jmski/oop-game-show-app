@@ -30,9 +30,24 @@
          return this.phrases[randomNum]; // store phrase based on number
      }
 
+     // set class name to chosen or wrong depending on letterKey
      handleInteraction(letterKey) {
          letterKey.disabled = true;
 
+         if (this.checkForWin() !== true) {
+             if (this.activePhrase.checkLetter(letterKey.textContent)) {
+                 letterKey.className = 'chosen';
+                 this.activePhrase.showMatchedLetter(letterKey.textContent);
+
+                 // checks if the game is over with every entry, if requirements are met, you either win or lose
+                 if (this.checkForWin()) {
+                     this.gameOver();
+                 }
+             } else {
+                 letterKey.className = 'wrong';
+                 this.removeLife();
+             }
+         }
      }
 
      // tracks lives left based on incorrect answers
@@ -48,5 +63,54 @@
          }
      }
 
-     
+     checkForWin() {
+         let gameWon = true;
+         const phraseElements = Array.from(document.querySelector('#phrase >ul').children);
+
+         phraseElements.forEach(letter => {
+             if (letter.className !== 'space') {
+                 if (letter.className === `show letter ${letter.textContent}` && gameWon === true) {
+                     gameWon = true;
+                 } else {
+                     gameWon = false;
+                 }
+             }
+         });
+         return gameWon;
+     }
+
+     // resets the game back to start after it displays win/ lose message
+     gameOver() {
+         const overlay = document.querySelector('#overlay');
+        const gameOverMessage = document.querySelector('#game-over-message');
+
+        overlay.style.display = ' ';
+
+        // display if win or lose
+        if (this.checkForWin()) {
+            overlay.className = 'win';
+            gameOverMessage.textContent = 'You win!';
+        } else {
+            overlay.className = 'lose';
+            gameOverMessage.textContent = 'You lose!';
+        }
+
+        // clear phrase
+        const ul = document.querySelector('#phrase > ul');
+        ul.textContent = ' '; 
+
+        // reset keyboard display
+        const keyboard = document.querySelectorAll('#qwerty div button');
+        for (let i = 0; i < keyboard.length; i++) {
+            keyboard[i].className = 'key';
+            keyboard[i].disabled = false;
+        }
+
+        // reset hearts
+        const hearts = document.querySelector('#scoreboard > ol');
+        for (let i = 0; i < hearets.children.length; i++) {
+            hearts.children[i].firstElementChild.src = 'images/liveHeart.png';
+        }
+     }
+
  }
