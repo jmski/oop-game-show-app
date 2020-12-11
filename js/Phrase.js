@@ -38,8 +38,8 @@ const ul = document.querySelector('#phrase > ul');
 
     // this function will show letters that match input
     showMatchedLetter(letter) {
-        let letterVisible = document.querySelector(`#phrase > ul > li.hide.letter.${letter}`);
         for (let i = 0; i < ul.children.length; i++) {
+            let letterVisible = document.querySelector(`#phrase > ul > li.hide.letter.${letter}`);
             // if letter matches set class to show letter
             if (letterVisible !== null) {
                 letterVisible.className = `show letter ${letter}`;

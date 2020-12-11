@@ -1,6 +1,8 @@
 /* Treehouse FSJS Techdegree
  * Project 4 - OOP Game App
  * Game.js */
+const overlay = document.querySelector('#overlay');
+
 
  // this class will provide the structure for the game
  class Game {
@@ -17,10 +19,10 @@
 
      //calls for a random phrase to start the game
      startGame() {
-         const overlay = document.querySelector('#overlay');
          overlay.style.display = 'none'; // hides the start screen overlay
          this.activePhrase = this.getRandomPhrase();
-         this.activePhrase = addPhraseToDisplay();
+         this.activePhrase.addPhraseToDisplay();
+         console.log(this.activePhrase.phrase);
      }
 
      // randomly select a phrase
@@ -63,6 +65,7 @@
          }
      }
 
+     // this method checks the class of all letters. If all are correct then method returns true
      checkForWin() {
          let gameWon = true;
          const phraseElements = Array.from(document.querySelector('#phrase >ul').children);
@@ -81,10 +84,8 @@
 
      // resets the game back to start after it displays win/ lose message
      gameOver() {
-         const overlay = document.querySelector('#overlay');
         const gameOverMessage = document.querySelector('#game-over-message');
-
-        overlay.style.display = ' ';
+        overlay.style.display = 'block';
 
         // display if win or lose
         if (this.checkForWin()) {
@@ -94,7 +95,7 @@
             overlay.className = 'lose';
             gameOverMessage.textContent = 'You lose!';
         }
-
+        console.log(gameOverMessage.textContent);
         // clear phrase
         const ul = document.querySelector('#phrase > ul');
         ul.textContent = ' '; 
@@ -108,7 +109,7 @@
 
         // reset hearts
         const hearts = document.querySelector('#scoreboard > ol');
-        for (let i = 0; i < hearets.children.length; i++) {
+        for (let i = 0; i < hearts.children.length; i++) {
             hearts.children[i].firstElementChild.src = 'images/liveHeart.png';
         }
      }
